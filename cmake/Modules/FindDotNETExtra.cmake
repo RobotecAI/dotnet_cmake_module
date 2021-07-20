@@ -1,4 +1,5 @@
 # Copyright 2016-2018 Esteve Fernandez <esteve@apache.org>
+# Copyright (C) 2020-2021, Robotec.ai
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -66,11 +67,15 @@ function(add_dotnet_test _TARGET_NAME)
     ${ARGN}
   )
 
-  set(CSHARP_TARGET_FRAMEWORK "netcoreapp2.0")
+  set(CSHARP_TARGET_FRAMEWORK "netcoreapp3.1")
   set(XUNIT_INCLUDE_REFERENCES
     "Microsoft.NET.Test.Sdk=15.9.0"
     "xunit=2.4.1"
     "xunit.runner.visualstudio=2.4.1"
+  )
+  set(NUNIT_INCLUDE_REFERENCES
+    "nunit=3.11.0"
+    "NUnit3TestAdapter=3.11.0"
   )
 
   csharp_add_project(${_TARGET_NAME}
@@ -85,6 +90,7 @@ function(add_dotnet_test _TARGET_NAME)
     INCLUDE_REFERENCES
     ${_add_dotnet_test_INCLUDE_REFERENCES}
     ${XUNIT_INCLUDE_REFERENCES}
+    ${NUNIT_INCLUDE_REFERENCES}
   )
 
   if(CSBUILD_PROJECT_DIR)
