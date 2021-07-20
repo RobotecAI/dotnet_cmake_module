@@ -1,5 +1,6 @@
 # Original Copyright:
 # Copyright (C) 2015-2017, Illumina, inc.
+# Copyright (C) 2020-2021, Robotec.ai
 #
 # Based on
 # https://github.com/Illumina/interop/tree/master/cmake/Modules
@@ -31,7 +32,7 @@ if(NOT CSHARP_TARGET_FRAMEWORK_VERSION)
     set(CSHARP_TARGET_FRAMEWORK_VERSION "2.0")
 endif()
 if(NOT CSHARP_TARGET_FRAMEWORK)
-    set(CSHARP_TARGET_FRAMEWORK "netstandard1.1")
+    set(CSHARP_TARGET_FRAMEWORK "netcoreapp3.1")
 endif()
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
