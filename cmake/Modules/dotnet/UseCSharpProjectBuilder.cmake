@@ -1,4 +1,4 @@
-# Original Copyright:
+# Copyright (C) 2020-2021, Robotec.ai
 # Copyright (C) 2015-2017, Illumina, inc.
 #
 # Based on
@@ -44,7 +44,8 @@ function(csharp_add_project name)
         file(TO_NATIVE_PATH "${CURRENT_TARGET_BINARY_DIR}/${name}/${PACKAGE_NAME}.${PACKAGE_VERSION}/lib/**/*.dll" hint_path)
         list(APPEND refs "<Reference;Include=\\\"${hint_path}\\\";></Reference>")
 
-        file(TO_NATIVE_PATH "${CURRENT_TARGET_BINARY_DIR}/${name}/${PACKAGE_NAME}.${PACKAGE_VERSION}/build/${PACKAGE_NAME}.targets" target_path)
+        file(TO_NATIVE_PATH
+          "${CURRENT_TARGET_BINARY_DIR}/${name}/${PACKAGE_NAME}.${PACKAGE_VERSION}/build/${PACKAGE_NAME}.targets" target_path)
         list(APPEND imports "<Import;Project=\\\"${target_path}\\\";Condition=\\\"Exists('${target_path}')\\\";/>")
     endforeach()
 
@@ -67,14 +68,14 @@ function(csharp_add_project name)
             list(APPEND sources_dep ${CMAKE_CURRENT_SOURCE_DIR}/${it})
         elseif(${it} MATCHES "[*]")
             file(TO_NATIVE_PATH ${it} nit)
-            FILE(GLOB it_glob ${it})
+            file(GLOB it_glob ${it})
             list(APPEND sources "<Compile;Include=\\\"${nit}\\\";/>")
             list(APPEND sources_dep ${it_glob})
         else()
             get_property(_is_generated SOURCE ${it} PROPERTY GENERATED)
             if(_is_generated)
                 file(TO_NATIVE_PATH ${it} nit)
-                FILE(GLOB it_glob ${it})
+                file(GLOB it_glob ${it})
                 list(APPEND sources "<Compile;Include=\\\"${nit}\\\";/>")
                 list(APPEND sources_dep ${it_glob})
             else()
@@ -174,7 +175,8 @@ function(csharp_add_project name)
         COMMAND ${CSBUILD_EXECUTABLE} ${CSBUILD_RESTORE_FLAGS} ${CSBUILD_${name}_CSPROJ}
         COMMAND ${CSBUILD_EXECUTABLE} ${CSBUILD_BUILD_FLAGS} ${CSBUILD_${name}_CSPROJ}
         WORKING_DIRECTORY ${CURRENT_TARGET_BINARY_DIR}/${name}
-        COMMENT "${RESTORE_CMD};${CSBUILD_EXECUTABLE} ${CSBUILD_RESTORE_FLAGS} ${CSBUILD_${name}_CSPROJ}; ${CSBUILD_EXECUTABLE} ${CSBUILD_BUILD_FLAGS} ${CSBUILD_${name}_CSPROJ} -> ${CURRENT_TARGET_BINARY_DIR}/${name}"
+        COMMENT "${RESTORE_CMD};${CSBUILD_EXECUTABLE} ${CSBUILD_RESTORE_FLAGS} ${CSBUILD_${name}_CSPROJ};\
+          ${CSBUILD_EXECUTABLE} ${CSBUILD_BUILD_FLAGS} ${CSBUILD_${name}_CSPROJ} -> ${CURRENT_TARGET_BINARY_DIR}/${name}"
         DEPENDS ${sources_dep}
     )
 

@@ -1,5 +1,5 @@
-# Copyright 2016-2018 Esteve Fernandez <esteve@apache.org>
 # Copyright (C) 2020-2021, Robotec.ai
+# Copyright 2016-2018 Esteve Fernandez <esteve@apache.org>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -114,16 +114,16 @@ function(install_dotnet _TARGET_NAME)
     get_target_property(_target_name ${_TARGET_NAME} OUTPUT_NAME)
     get_target_property(_target_dotnet_core ${_TARGET_NAME} DOTNET_CORE)
 
-    if (ARGC EQUAL 2)
-      set (_DESTINATION ${ARGV1})
+    if(ARGC EQUAL 2)
+      set(_DESTINATION ${ARGV1})
     else()
       cmake_parse_arguments(_install_dotnet
         ""
         "DESTINATION"
         ""
         ${ARGN})
-      if (_install_dotnet_DESTINATION)
-        set (_DESTINATION ${_install_dotnet_DESTINATION})
+      if(_install_dotnet_DESTINATION)
+        set(_DESTINATION ${_install_dotnet_DESTINATION})
       else()
         message(SEND_ERROR "install_dotnet: ${_TARGET_NAME}: DESTINATION must be specified.")
       endif()

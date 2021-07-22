@@ -1,4 +1,4 @@
-# Original Copyright:
+# Copyright (C) 2020-2021, Robotec.ai
 # Copyright (C) 2015-2017, Illumina, inc.
 #
 # Based on
@@ -55,14 +55,14 @@ find_program(XBUILD_EXECUTABLE xbuild xbuild.exe
         HINTS ${csharp_mono_bin_hints}
         PATH_SUFFIXES bin
         NO_DEFAULT_PATH
-       )
+)
 
 if(EXISTS "${MONO_EXECUTABLE}")
     execute_process(
-            COMMAND ${MONO_EXECUTABLE} -V
-            OUTPUT_VARIABLE csharp_mono_version_string
-   )
-    string(REGEX MATCH "([0-9]*)([.])([0-9]*)([.]*)([0-9]*)" csharp_mono_version_temp "${csharp_mono_version_string}")
+      COMMAND ${MONO_EXECUTABLE} -V
+      OUTPUT_VARIABLE csharp_mono_version_string
+    )
+string(REGEX MATCH "([0-9]*)([.])([0-9]*)([.]*)([0-9]*)" csharp_mono_version_temp "${csharp_mono_version_string}")
     set(MONO_VERSION ${csharp_mono_version_temp} CACHE STRING "C# Mono interpreter version")
 endif()
 
