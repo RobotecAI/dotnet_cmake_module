@@ -1,4 +1,4 @@
-# Original Copyright:
+# Copyright (C) 2020-2021, Robotec.ai
 # Copyright (C) 2015-2017, Illumina, inc.
 #
 # Based on
@@ -20,7 +20,6 @@ if(DOTNET_CORE_ROOT AND EXISTS "${DOTNET_CORE_ROOT}")
             NO_DEFAULT_PATH)
 endif()
 
-
 find_program(DOTNET_CORE_EXECUTABLE dotnet dotnet.exe)
 
 if(EXISTS "${DOTNET_CORE_EXECUTABLE}")
@@ -28,7 +27,7 @@ if(EXISTS "${DOTNET_CORE_EXECUTABLE}")
         COMMAND ${DOTNET_CORE_EXECUTABLE} --version
         OUTPUT_VARIABLE dotnet_core_version_string
         OUTPUT_STRIP_TRAILING_WHITESPACE
-   )
+    )
     string(REGEX MATCH "([0-9]*)([.])([0-9]*)([.]*)([0-9]*)" dotnet_core_version_string "${dotnet_core_version_string}")
     set(DOTNET_CORE_VERSION ${dotnet_core_version_string} CACHE STRING ".NET coreclr version" FORCE)
 endif()
