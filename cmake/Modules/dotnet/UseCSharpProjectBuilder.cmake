@@ -5,13 +5,10 @@
 # https://github.com/Illumina/interop/tree/master/cmake/Modules
 
 function(csharp_add_project name)
-    if(CSBUILD_PROJECT_DIR)
-        set(CURRENT_TARGET_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/${CSBUILD_PROJECT_DIR}")
-    else()
-        set(CURRENT_TARGET_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}")
-    endif()
-    set(CSBUILD_PROJECT_DIR "")
-    file(MAKE_DIRECTORY ${CURRENT_TARGET_BINARY_DIR}/${name})
+    set(CSBUILD_PROJECT_DIR ${_TARGET_NAME})
+    set(CURRENT_TARGET_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/${CSBUILD_PROJECT_DIR}")
+
+    file(MAKE_DIRECTORY ${CURRENT_TARGET_BINARY_DIR})
     cmake_parse_arguments(_csharp_add_project
         "EXECUTABLE"
         ""
@@ -41,11 +38,11 @@ function(csharp_add_project name)
         list(GET PACKAGE_ID 1 PACKAGE_VERSION)
         list(APPEND packages "<PackageReference;Include=\\\"${PACKAGE_NAME}\\\";Version=\\\"${PACKAGE_VERSION}\\\";/>")
         list(APPEND legacy_packages "<package;id=\\\"${PACKAGE_NAME}\\\";version=\\\"${PACKAGE_VERSION}\\\";/>")
-        file(TO_NATIVE_PATH "${CURRENT_TARGET_BINARY_DIR}/${name}/${PACKAGE_NAME}.${PACKAGE_VERSION}/lib/**/*.dll" hint_path)
+        file(TO_NATIVE_PATH "${CURRENT_TARGET_BINARY_DIR}/${PACKAGE_NAME}.${PACKAGE_VERSION}/lib/**/*.dll" hint_path)
         list(APPEND refs "<Reference;Include=\\\"${hint_path}\\\";></Reference>")
 
         file(TO_NATIVE_PATH
-          "${CURRENT_TARGET_BINARY_DIR}/${name}/${PACKAGE_NAME}.${PACKAGE_VERSION}/build/${PACKAGE_NAME}.targets" target_path)
+          "${CURRENT_TARGET_BINARY_DIR}/${PACKAGE_NAME}.${PACKAGE_VERSION}/build/${PACKAGE_NAME}.targets" target_path)
         list(APPEND imports "<Import;Project=\\\"${target_path}\\\";Condition=\\\"Exists('${target_path}')\\\";/>")
     endforeach()
 
@@ -113,7 +110,7 @@ function(csharp_add_project name)
         set(CSHARP_IMPORTS "")
     endif()
 
-    if(${_csharp_add_project_EXECUTABLE} AND NOT DOTNET_CORE_FOUND)
+    if(${_csharp_add_project_EXECUTABLE} AND NOT DotNetCore_FOUND)
         set(ext "exe")
     else()
         set(ext "dll")
@@ -155,28 +152,28 @@ function(csharp_add_project name)
         -DMSBUILD_TOOLSET="${MSBUILD_TOOLSET}"
         -DCSHARP_IMPORTS="${CSHARP_IMPORTS}"
         -DCONFIG_INPUT_FILE="${CSBUILD_CSPROJ_IN}"
-        -DCONFIG_OUTPUT_FILE="${CURRENT_TARGET_BINARY_DIR}/${name}/${CSBUILD_${name}_CSPROJ}"
+        -DCONFIG_OUTPUT_FILE="${CURRENT_TARGET_BINARY_DIR}/${CSBUILD_${name}_CSPROJ}"
         -P ${dotnet_cmake_module_DIR}/ConfigureFile.cmake
 
         COMMAND ${CMAKE_COMMAND}
         -DCSHARP_PACKAGE_REFERENCES="${CSHARP_LEGACY_PACKAGE_REFERENCES}"
         -DCONFIG_INPUT_FILE="${dotnet_cmake_module_DIR}/Modules/dotnet/packages.config.in"
-        -DCONFIG_OUTPUT_FILE="${CURRENT_TARGET_BINARY_DIR}/${name}/packages.config"
+        -DCONFIG_OUTPUT_FILE="${CURRENT_TARGET_BINARY_DIR}/packages.config"
         -P ${dotnet_cmake_module_DIR}/ConfigureFile.cmake
 
         COMMAND ${CMAKE_COMMAND}
         -DCSHARP_BUILDER_OUTPUT_NAME="${name}${CSBUILD_OUTPUT_SUFFIX}"
         -DCONFIG_INPUT_FILE="${dotnet_cmake_module_DIR}/Modules/dotnet/Directory.Build.props.in"
-        -DCONFIG_OUTPUT_FILE="${CURRENT_TARGET_BINARY_DIR}/${name}/Directory.Build.props"
+        -DCONFIG_OUTPUT_FILE="${CURRENT_TARGET_BINARY_DIR}/Directory.Build.props"
         -P ${dotnet_cmake_module_DIR}/ConfigureFile.cmake
 
         COMMAND ${RESTORE_CMD}
 
         COMMAND ${CSBUILD_EXECUTABLE} ${CSBUILD_RESTORE_FLAGS} ${CSBUILD_${name}_CSPROJ}
         COMMAND ${CSBUILD_EXECUTABLE} ${CSBUILD_BUILD_FLAGS} ${CSBUILD_${name}_CSPROJ}
-        WORKING_DIRECTORY ${CURRENT_TARGET_BINARY_DIR}/${name}
+        WORKING_DIRECTORY ${CURRENT_TARGET_BINARY_DIR}
         COMMENT "${RESTORE_CMD};${CSBUILD_EXECUTABLE} ${CSBUILD_RESTORE_FLAGS} ${CSBUILD_${name}_CSPROJ};\
-          ${CSBUILD_EXECUTABLE} ${CSBUILD_BUILD_FLAGS} ${CSBUILD_${name}_CSPROJ} -> ${CURRENT_TARGET_BINARY_DIR}/${name}"
+          ${CSBUILD_EXECUTABLE} ${CSBUILD_BUILD_FLAGS} ${CSBUILD_${name}_CSPROJ} -> ${CURRENT_TARGET_BINARY_DIR}"
         DEPENDS ${sources_dep}
     )
 
@@ -190,7 +187,7 @@ function(csharp_add_project name)
         ${DOTNET_OUTPUT_PATH}
         OUTPUT_NAME
         ${name}${CSBUILD_OUTPUT_SUFFIX}.${ext}
-        DOTNET_CORE
-        ${DOTNET_CORE_FOUND}
+        DotNetCore
+        ${DotNetCore_FOUND}
     )
 endfunction()
