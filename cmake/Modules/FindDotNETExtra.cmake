@@ -67,7 +67,6 @@ function(add_dotnet_test _TARGET_NAME)
     ${ARGN}
   )
 
-  set(CSHARP_TARGET_FRAMEWORK "netcoreapp3.1")
   set(XUNIT_INCLUDE_REFERENCES
     "Microsoft.NET.Test.Sdk=15.9.0"
     "xunit=2.4.1"
@@ -79,7 +78,6 @@ function(add_dotnet_test _TARGET_NAME)
   )
 
   csharp_add_project(${_TARGET_NAME}
-    EXECUTABLE
     SOURCES
     ${_add_dotnet_test_SOURCES}
     ${_add_dotnet_test_UNPARSED_ARGUMENTS}
