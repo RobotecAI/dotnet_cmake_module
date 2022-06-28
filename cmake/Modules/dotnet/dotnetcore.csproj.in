@@ -6,8 +6,12 @@
    <OutputType>@CSHARP_BUILDER_OUTPUT_TYPE@</OutputType>
    <OutputPath>@CSHARP_BUILDER_OUTPUT_PATH@</OutputPath>
    <AssemblyName>@CSHARP_BUILDER_OUTPUT_NAME@</AssemblyName>
+   <Configuration>@CSHARP_CONFIGURE@</Configuration>
   </PropertyGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>None</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
   <ItemGroup>
     @CSHARP_BUILDER_SOURCES@
   </ItemGroup>
