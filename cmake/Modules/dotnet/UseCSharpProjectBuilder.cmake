@@ -177,10 +177,7 @@ function(csharp_add_project name)
         DEPENDS ${sources_dep}
     )
 
-    set(DOTNET_OUTPUT_PATH ${CSHARP_BUILDER_OUTPUT_PATH})
-    if("${CSBUILD_TOOL}" STREQUAL "DotNetCore")
-        set(DOTNET_OUTPUT_PATH ${DOTNET_OUTPUT_PATH}/${CSHARP_TARGET_FRAMEWORK}/)
-    endif()
+    set(DOTNET_OUTPUT_PATH ${CSHARP_BUILDER_OUTPUT_PATH}/${CSHARP_TARGET_FRAMEWORK}/)
 
     set_target_properties(${name}
         PROPERTIES

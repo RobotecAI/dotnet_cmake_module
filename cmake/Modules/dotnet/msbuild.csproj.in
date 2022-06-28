@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="@MSBUILD_TOOLSET@" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <!-- <Platform Condition=" '$(Platform)' == '' ">x64</Platform> -->
     <ProjectGuid>{EED1EB2A-9001-4506-984E-E7DC92C9B237}</ProjectGuid>
     <OutputType>@CSHARP_BUILDER_OUTPUT_TYPE@</OutputType>
@@ -12,7 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoStdLib>false</NoStdLib>
-    <OutputPath>@CSHARP_BUILDER_OUTPUT_PATH@</OutputPath>
+    <OutputPath>@CSHARP_BUILDER_OUTPUT_PATH@/@CSHARP_TARGET_FRAMEWORK@</OutputPath>
     <PlatformTarget>@CSHARP_PLATFORM@</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoStdLib>false</NoStdLib>
